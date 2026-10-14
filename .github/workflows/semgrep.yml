@@ -1,23 +1,24 @@
 
-name: Semgrep SAST
+name: Semgrep PR Scan
 
 on:
-  push:
   pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  sast:
-    name: Static Application Security Testing
+  semgrep:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Run Semgrep
+      - name: Run Semgrep PR scan
         uses: semgrep/semgrep-action@v1
         with:
           config: p/python
